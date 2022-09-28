@@ -9,13 +9,13 @@ ui <- fluidPage(
   h1("brac shiny app"),
   sidebarLayout(
     sidebarPanel(selectInput("functionInput", "function",
-                             choices = c("Server Ping", "Server time"))),
-    mainPanel(tableOutput("result"))
+                             choices = c("Server Ping" = pingToServer(),
+                                         "Server time" = checkServerTime()))),
+    mainPanel(dataTableOutput("table"))
   )
 )
 
 server <- function(input, output) {
-  print(input)
-  print(output)
+  output$table <- renderDataTable(as.data.frame.AsIs(input$functionInput))
 }
 shinyApp(ui = ui, server = server)
